@@ -15,9 +15,9 @@ update () { yes | sudo apt-get update; }
 upgrade () { yes | sudo apt-get upgrade; }
 
 # Update the system
-echo "Would you like to update the system (Recommended)? (y/n/e)"
+echo -e "\e[1;33mWould you like to update the system (Recommended)? (y/n/e)\e[0m"
 echo " "
-echo "y=yes | n=no | e=exit-installer."
+echo "\e[1;33my=yes | n=no | e=exit-installer.\e[0m"
 echo " "
 
 read -n1 yesorno
@@ -26,15 +26,15 @@ if [ "$yesorno" = y ]; then
 	update
 	upgrade
 	echo " "
-	echo "Update Successful."
+	echo "\e[1;32mUpdate Successful.\e[0m"
 	echo " "
 elif [ "$yesorno" = n ]; then
 	echo " "
-	echo "Skipping..."
+	echo "\e[1;33mSkipping...\e[0m"
 	echo " "
 else
 	echo " "
-	echo "Not a valid answer. Exiting..."
+	echo "\e[1;31mNot a valid answer. Exiting...\e[0m"
 	exit 1
 fi
 
@@ -51,7 +51,7 @@ clear
 
 
 # Make directories/files for authelia
-echo -e "\e[1;31mCreating files and directories for authelia...\e[0m"
+echo -e "\e[1;33mCreating files and directories for authelia...\e[0m"
 echo " "
 mkdir /home/$USER/auto-authelia/authelia
 mkdir /home/$USER/auto-authelia/authelia/config
