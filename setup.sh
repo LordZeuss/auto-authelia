@@ -53,8 +53,8 @@ clear
 # Make directories/files for authelia
 echo -e "\e[1;33mCreating files and directories for authelia...\e[0m"
 echo " "
-mkdir /home/$USER/auto-authelia/authelia
-mkdir /home/$USER/auto-authelia/authelia/config
+mkdir -p /home/$USER/auto-authelia/authelia
+mkdir -p /home/$USER/auto-authelia/authelia/config
 touch /home/$USER/auto-authelia/authelia/docker-compose.yml
 touch /home/$USER/auto-authelia/authelia/config/configuration.yml
 touch /home/$USER/auto-authelia/authelia/config/users_database.yml
@@ -94,7 +94,6 @@ services:
       - TZ=America/Chicago
     depends_on:
       - redis
-
   redis:
     image: redis:alpine
     volumes:
@@ -122,26 +121,21 @@ read -p $'\e[1;36mDo you prefer Light or Dark mode/theme? [TYPE light OR dark]\e
 echo "###############################################################
 #                   Authelia configuration                    #
 ###############################################################
-
 server:
   host: 0.0.0.0
   port: 9091
-
 jwt_secret: SECRETREPLACE #Generate a random string
 log:
   level: debug
-
 default_redirection_url: $redirecturl #Ex:https://auth.example.com
 totp:
   issuer: $rootdomain #EX: example.com
   period: 30
   skew: 1
-
 #duo_api:     ## You can use this api if you want push notifications of auth attempts
 #  hostname: api-123456789.example.com
 #  integration_key: ABCDEF
 #  secret_key: yet-another-long-string-of-characters-and-numbers-and-symbols
-
 authentication_backend:
   password_reset.disable: false
   file:
@@ -171,7 +165,6 @@ access_control:
      
       #      networks:
       #      - 192.168.1.0/24
-
 session:
   name: authelia_session
   # This secret can also be set using the env variables AUTHELIA_SESSION_SECRET_FILE
@@ -179,22 +172,18 @@ session:
   expiration: 3600 # 1 hour
   inactivity: 7200 # 2 hours
   domain: $rootdomain # Should match whatever your root protected domain is EX: example.com
-
     # This secret can also be set using the env variables AUTHELIA_SESSION_REDIS_PASSWORD_FILE
 #    password: authelia
-
 regulation:
   max_retries: RETRIES
   find_time: FINDTIME
   ban_time: BANTIME
   
 theme: $theme #light or dark
-
 storage:
   encryption_key: SECRETREPLACE3 #Generate long string numb/letters
   local:
     path: /config/db.sqlite3
-
 notifier:
  filesystem:
   filename: /config/notification.txt
@@ -211,7 +200,6 @@ notifier:
     #  server_name: <smtp.example.com>
     #  skip_verify: false
     #  minimum_version: TLS1.2
-
   ">> /home/$USER/auto-authelia/authelia/config/configuration.yml
   
   
@@ -328,7 +316,6 @@ echo "users:
     email: $useremail #whatever your email address is
     groups:
       - admins
-
   #user2: #Use the above details as a template. Uncomment to use. Add as many users as necessary.
     #displayname: "User2"
     #password: "hashedpasswordhere" #generated at https://argon2.online/ OR docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'
