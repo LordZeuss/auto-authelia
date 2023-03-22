@@ -1,9 +1,13 @@
 # Auto-Authelia
-A script that will install nginx proxy manager as well as configure authelia automatically.
+A script that will configure authelia automatically. See future plans of adding features below.
 
 ## General Info
 I created a script that will install Nginx Proxy Manager via docker-compose, as well as Authelia and will give you prompts to quickly get Authelia up and running as quickly as possible.
 
+## Future Plans:
+
+* Adding reverse proxy installation and assisted or fully automated configuration for multiple reverse proxy solutions. Caddy. NGINX, Traefik, etc.
+* Adding the ability to setup the email portion in authelia config
 ---
 
 ## Table of Contents
