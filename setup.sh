@@ -8,7 +8,7 @@ ___  ____ _  _ ____    _ _  _ ____ ___ ____ _    _    ____ ____
                                                                 
 \e[0m"
 
-
+#v1.0
 
 #Functions List
 update () { yes | sudo apt-get update; }
