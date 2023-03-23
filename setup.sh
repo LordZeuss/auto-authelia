@@ -26,15 +26,15 @@ if [ "$yesorno" = y ]; then
 	update
 	upgrade
 	echo " "
-	echo "\e[1;32mUpdate Successful.\e[0m"
+	echo -e "\e[1;32mUpdate Successful.\e[0m"
 	echo " "
 elif [ "$yesorno" = n ]; then
 	echo " "
-	echo "\e[1;33mSkipping...\e[0m"
+	echo -e "\e[1;33mSkipping...\e[0m"
 	echo " "
 else
 	echo " "
-	echo "\e[1;31mNot a valid answer. Exiting...\e[0m"
+	echo -e "\e[1;31mNot a valid answer. Exiting...\e[0m"
 	exit 1
 fi
 
