@@ -296,6 +296,4 @@ Run the docker-compose command to start everything up.
 docker-compose up -d
 ```
 
----
-
-***NOTE: You will find the 2 factor setup text inside of a file within the authelia folder. This is because it is set to save on the system, unless you manually update the email settings in the configuration.yml file to send out an email.***
+***NOTE: You will find the 2 factor authentication email inside of a `authelia/config` folder. It will be called `notification.txt`. This is because it is set to save on the system, unless you manually update the email settings in the configuration.yml file to send out an email.***
