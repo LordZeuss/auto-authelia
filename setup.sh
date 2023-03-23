@@ -291,8 +291,6 @@ if [ "$yesorno" = a ]; then
     #password: "hashedpasswordhere" #generated at https://argon2.online/ OR docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'
     #email: user2@email.com
 " >> /home/$USER/auto-authelia/authelia/config/users_database.yml
-
-  
   echo " "
   echo " "
   echo -e "\e[1;33mRunning Authelia docker container to hash password. Please wait...\e[0m"
