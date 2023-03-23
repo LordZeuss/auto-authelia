@@ -604,9 +604,9 @@ echo " "
 echo " "
 echo -e "\e[1;36mWould you like to configure and hash the admin password automatically or configure it manually yourself? (a|auto | m|manually)\e[0m"
 
-read -n1 yesorno
+read -n1 configure
 
-if [ "$yesorno" = a ]; then
+if [ "$configure" = a ]; then
   echo " "
   read -s -p $'\e[1;36mEnter the password for the admin user\e[0m: ' adminpass
   echo " "
@@ -632,7 +632,7 @@ if [ "$yesorno" = a ]; then
   sed -i "s/HASHPASS/$secret/" /home/$USER/auto-authelia/authelia/config/users_database.yml
   echo " "
   echo -e "\e[1;32mPassword Updated.\e[0m"
-elif [ "$yesorno" = m ]; then
+elif [ "$configure" = m ]; then
   echo " "
   echo "users:
   $user: #username for user 1. change to whatever you'd like
