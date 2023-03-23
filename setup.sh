@@ -279,37 +279,7 @@ read -n1 yesorno
 if [ "$yesorno" = a ]; then
   echo " "
   read -s -p $'\e[1;36mEnter the password for the admin user\e[0m: ' adminpass
-  echo " "
-  echo " "
-  echo -e "\e[1;33mRunning Authelia docker container to hash password. Please wait...\e[0m"
-# Run the docker command and save the output to a variable
-  output=$(docker run authelia/authelia:latest authelia crypto hash generate argon2 --password '$adminpass')
-# Extract the hash from the output and save it to a variable
-  HASHPASS=${output#Digest: }
-  sed -i "s/HASHPASS/$secret/" /home/$USER/auto-authelia/authelia/config/users_database.yml
-  echo " "
-  echo -e "\e[1;32mPassword Updated.\e[0m"
-elif [ "$yesorno" = n ]; then
-  echo " "
-  echo -e "\e[1;33mYou can generate a password at https://argon2.online/ OR run the command: docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'\e[0m"
-  echo " "
-  echo -e "\e[1;33mNavigate to /home/$USER/auto-authelia/authelia/config and edit the configuration.yml file. Replace the HASHPASS string with the hashed password\e[0m"
-else
-  echo " "
-  echo -e "\e[1;33mSkipping...\e[0m"
-fi
-
-######################################################################
-# Configuring the users_database.yml file
-
-echo " "
-echo " "
-echo " "
-echo -e "\e[1;33mUpdating Users Database file...\e[0m"
-echo " "
-echo -e "\e[1;33mDone.\e[0m"
-
-echo "users:
+  echo "users:
   $user: #username for user 1. change to whatever you'd like
     displayname: "$userdisplay" #whatever you want the display name to be
     password: "HASHPASS" #generated at https://argon2.online/
@@ -322,6 +292,36 @@ echo "users:
     #email: user2@email.com
 " >> /home/$USER/auto-authelia/authelia/config/users_database.yml
 
-echo " "
-echo " "
-echo -e "\e[1;32mAuthelia Configuration Script Complete!\e[0m"
+  
+  echo " "
+  echo " "
+  echo -e "\e[1;33mRunning Authelia docker container to hash password. Please wait...\e[0m"
+# Run the docker command and save the output to a variable
+  output=$(docker run authelia/authelia:latest authelia crypto hash generate argon2 --password '$adminpass')
+# Extract the hash from the output and save it to a variable
+  HASHPASS=${output#Digest: }
+  sed -i "s/HASHPASS/$secret/" /home/$USER/auto-authelia/authelia/config/users_database.yml
+  echo " "
+  echo -e "\e[1;32mPassword Updated.\e[0m"
+elif [ "$yesorno" = m ]; then
+  echo "users:
+  $user: #username for user 1. change to whatever you'd like
+    displayname: "$userdisplay" #whatever you want the display name to be
+    password: "HASHPASS" #generated at https://argon2.online/
+    email: $useremail #whatever your email address is
+    groups:
+      - admins
+  #user2: #Use the above details as a template. Uncomment to use. Add as many users as necessary.
+    #displayname: "User2"
+    #password: "hashedpasswordhere" #generated at https://argon2.online/ OR docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'
+    #email: user2@email.com
+" >> /home/$USER/auto-authelia/authelia/config/users_database.yml
+
+  echo " "
+  echo -e "\e[1;33mYou can generate a password at https://argon2.online/ OR run the command: docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'\e[0m"
+  echo " "
+  echo -e "\e[1;33mNavigate to /home/$USER/auto-authelia/authelia/config and edit the configuration.yml file. Replace the HASHPASS string with the hashed password\e[0m"
+else
+  echo " "
+  echo -e "\e[1;33mSkipping...\e[0m"
+fi
