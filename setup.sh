@@ -634,6 +634,18 @@ if [ "$yesorno" = a ]; then
   echo -e "\e[1;32mPassword Updated.\e[0m"
 elif [ "$yesorno" = m ]; then
   echo " "
+  echo "users:
+  $user: #username for user 1. change to whatever you'd like
+    displayname: "$userdisplay" #whatever you want the display name to be
+    password: "HASHPASS" #generated at https://argon2.online/
+    email: $useremail #whatever your email address is
+    groups:
+      - admins
+  #user2: #Use the above details as a template. Uncomment to use. Add as many users as necessary.
+    #displayname: "User2"
+    #password: "hashedpasswordhere" #generated at https://argon2.online/ OR docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'
+    #email: user2@email.com
+" >> /home/$USER/auto-authelia/authelia/config/users_database.yml
   echo -e "\e[1;33mYou can generate a password at https://argon2.online/ OR run the command: docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'\e[0m"
   echo " "
   echo -e "\e[1;33mNavigate to /home/$USER/auto-authelia/authelia/config and edit the configuration.yml file. Replace the HASHPASS string with the hashed password\e[0m"
