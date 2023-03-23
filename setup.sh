@@ -17,7 +17,7 @@ upgrade () { yes | sudo apt-get upgrade; }
 # Update the system
 echo -e "\e[1;33mWould you like to update the system (Recommended)? (y/n/e)\e[0m"
 echo " "
-echo "\e[1;33my=yes | n=no | e=exit-installer.\e[0m"
+echo -e "\e[1;33my=yes | n=no | e=exit-installer.\e[0m"
 echo " "
 
 read -n1 yesorno
