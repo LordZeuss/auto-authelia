@@ -10,7 +10,7 @@ I created a script that will install Nginx Proxy Manager via docker-compose, as 
 * Adding the ability to setup the email portion in authelia config
 * Embedded video on how the to run the scripts, and using them with NPM. For demo purposes as well as a short how-to.
 
-UPDATE 3/25: I would like to have a video demo/guide as well as NPM out by next week.
+UPDATE 3/25: I would like to have a video demo/guide as well as an NPM setup script/walk through by next week.
 ---
 
 ## Table of Contents
