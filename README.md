@@ -117,7 +117,7 @@ Put your service under one or two factor depending on what you prefer. You can a
 
 Setting up the service in Authelia is as simple as adding the service to the configuration.yml file. The more "Challenging" part can be configuring it with your reverse proxy.
 
-Authelia has documentation on implimenting it for different proxies, but I will provide instructions on Nginx Proxy Manager (NPM) as that is what I personally use, and I have the most experience with that.
+Authelia has documentation on implimenting it for different proxies. I have provided NPM instructions and Caddy instructions, and I just switched from NPM to Caddy myself, as I'd rather add a few lines to the Caddyfile rather than use NPM and go through all the steps.
 
 ---
 
@@ -366,6 +366,8 @@ anotherservice.example.com {
 
 Navigate to the auto-authelia folder if you are not there already.
 
+*NOTE: Caddy will only start/stop if you are in the directory where the `Caddyfile` is located. Ours is in the auto-authelia directory.*
+
 To start Caddy:
 ```
 caddy start
@@ -375,6 +377,7 @@ To stop Caddy:
 caddy stop
 ```
 
+*NOTE: If you edit the caddy file, simple stop and start Caddy again*
 ---
 
 ## Starting Authelia
