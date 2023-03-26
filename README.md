@@ -10,7 +10,8 @@ I created a script that will install Nginx Proxy Manager via docker-compose, as 
 * Adding the ability to setup the email portion in authelia config
 * Embedded video on how the to run the scripts, and using them with NPM. For demo purposes as well as a short how-to.
 
-UPDATE 3/25: I would like to have a video demo/guide as well as an NPM setup script/walk through by next week.
+#### UPDATE 3/25: I will have a video demo/guide incoming.
+#### UPDATE 3/26: NPM & Caddy (setup for caddy) script added! 
 ---
 
 ## Table of Contents
@@ -18,8 +19,9 @@ UPDATE 3/25: I would like to have a video demo/guide as well as an NPM setup scr
 * [Basic Commands](#basic-commands)
 * [Pre-Requirements](#pre-requirements)
 * [Installation](#installation)
-* [Configuring Protected Services](configuring-protected-services)
-* [Reverse Proxy Setup](reverse-proxy-setup)
+* [Configuring Protected Services](#configuring-protected-services)
+* [Reverse Proxy Setup](#reverse-proxy-setup)
+* [Caddy Setup](#caddy-setup)
 * [Starting Authelia](#starting-authelia)
 ---
 
@@ -282,6 +284,88 @@ location /authelia {
         real_ip_header X-Forwarded-For;
         real_ip_recursive on;
     }
+```
+
+# Caddy Setup
+
+Run the proxy-setup.sh script.
+
+```
+./proxy-setup.sh
+```
+Select number 2 for caddy.
+
+Once Caddy is selected, it will automatically install Caddy. 
+
+*NOTE: If you already have Caddy installed and it asks you if you want to overwrite your GPG keychain, you can select yes, or use CTRL+C to skip.*
+
+Once Caddy is installed, you will need to provide the auth root domain, the same as you did with authelia. `EX: auth.yourdomain.com`
+
+The script will create your Caddyfile, inside of the auto-authelia folder.
+
+---
+## Caddy Configuration
+
+To add services to be used by caddy, edit the Caddyfile that was just created in the auto-authelia folder.
+
+```
+nano Caddyfile
+```
+The authelia section is already created for you.
+
+You will notice that there is a `service.example.com` section. You will need to replace `service.example.com` with the url you are going to use for the service.
+
+```
+EX: portainer.mydomain.com
+```
+Finally, under the `reverse_proxy` portion, you will need to replace `SERVICEPORTHERE` with the port of the service you are trying to proxy with authelia.
+
+It may look something like this:
+```
+localhost:9000
+```
+Or if your service is being ran by another server, and isn't a localhost service, it will look like this:
+```
+192.168.1.10:9000
+```
+
+If you need to add more services, simply copy use the same format as `service.example.com` in another block below. 
+
+Here is an example of two services (using localhost and a IP):
+```
+auth.example.com {
+        reverse_proxy localhost:9091
+}
+
+service.example.com {
+        forward_auth localhost:9091 {
+                uri /api/verify?rd=https://auth.example.com/
+                copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+        }
+        reverse_proxy localhost:8080 {
+        }
+        
+anotherservice.example.com {
+        forward_auth localhost:9091 {
+                uri /api/verify?rd=https://auth.example.com/
+                copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+        }
+        reverse_proxy 192.168.1.10:9000 {
+        }
+}
+```
+--
+## Start Caddy
+
+Navigate to the auto-authelia folder if you are not there already.
+
+To start Caddy:
+```
+caddy start
+```
+To stop Caddy:
+```
+caddy stop
 ```
 
 ---
