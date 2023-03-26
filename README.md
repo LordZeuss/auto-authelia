@@ -55,6 +55,11 @@ Currently, you will need to make the script executable.
 ```
 chmod +x setup.sh
 ```
+You will also need to make the `proxy-setup.sh` script executable if you wish to use that script also.
+
+```
+chmod +x proxy-setup.sh
+```
 
 ---
 
@@ -354,7 +359,9 @@ anotherservice.example.com {
         }
 }
 ```
---
+
+---
+
 ## Start Caddy
 
 Navigate to the auto-authelia folder if you are not there already.
