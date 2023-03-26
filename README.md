@@ -366,7 +366,7 @@ anotherservice.example.com {
 
 Navigate to the auto-authelia folder if you are not there already.
 
-*NOTE: Caddy will only start/stop if you are in the directory where the `Caddyfile` is located. Ours is in the auto-authelia directory.*
+#### *NOTE: Caddy will only start/stop if you are in the directory where the `Caddyfile` is located. Ours is in the auto-authelia directory.*
 
 To start Caddy:
 ```
@@ -377,7 +377,7 @@ To stop Caddy:
 caddy stop
 ```
 
-*NOTE: If you edit the caddy file, simple stop and start Caddy again*
+#### *NOTE: If you edit the caddy file, simple stop and start Caddy again*
 ---
 
 ## Starting Authelia
