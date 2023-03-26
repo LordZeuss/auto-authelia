@@ -20,7 +20,7 @@ I created a script that will install Nginx Proxy Manager via docker-compose, as 
 * [Pre-Requirements](#pre-requirements)
 * [Installation](#installation)
 * [Configuring Protected Services](#configuring-protected-services)
-* [Reverse Proxy Setup](#reverse-proxy-setup)
+* [NGINX Proxy Manager Setup](#nginx-proxy-manager-setup)
 * [Caddy Setup](#caddy-setup)
 * [Starting Authelia](#starting-authelia)
 ---
@@ -121,7 +121,7 @@ Authelia has documentation on implimenting it for different proxies, but I will 
 
 ---
 
-## Reverse Proxy Setup
+## NGINX Proxy Manager Setup
 
 First, install NPM. (I have plans to impliment a way to install/give option to install in the future.)
 
