@@ -377,7 +377,7 @@ To stop Caddy:
 caddy stop
 ```
 
-#### *NOTE: If you edit the caddy file, simple stop and start Caddy again*
+#### *NOTE: If you edit the caddy file, just stop and start Caddy again*
 ---
 
 ## Starting Authelia
