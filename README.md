@@ -302,7 +302,7 @@ Select number 2 for caddy.
 
 Once Caddy is selected, it will automatically install Caddy. 
 
-*NOTE: If you already have Caddy installed and it asks you if you want to overwrite your GPG keychain, you can select yes, or use CTRL+C to skip.*
+***NOTE: If you already have Caddy installed and it asks you if you want to overwrite the GPG keychain, you can select yes, or use CTRL+C to skip.***
 
 Once Caddy is installed, you will need to provide the auth root domain, the same as you did with authelia. `EX: auth.yourdomain.com`
 
