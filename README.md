@@ -8,7 +8,7 @@ I created a script that will install Nginx Proxy Manager via docker-compose, as 
 
 * Adding reverse proxy installation and assisted or fully automated configuration for multiple reverse proxy solutions. Caddy. NGINX, Traefik, etc.
 * Adding the ability to setup the email portion in authelia config
-* Embedded video on how the to run the scripts, and using them with NPM. For demo purposes as well as a short how-to.
+* Embedded video on how the to run the scripts, and using them with NPM & Caddy. For demo purposes as well as a short how-to.
 
 #### UPDATE 3/25: I will have a video demo/guide incoming.
 #### UPDATE 3/26: NPM & Caddy (setup for caddy) script added! 
