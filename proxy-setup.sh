@@ -96,7 +96,6 @@ fi
         reverse_proxy localhost:9091
 }
 
-# Replace service.example.com
 service.example.com {
         forward_auth localhost:9091 {
                 uri /api/verify?rd=https://$rootauthdomain/
