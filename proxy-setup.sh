@@ -68,10 +68,7 @@ fi
     ;;
   2)
     #Caddy install
-    echo " "
-    echo -e "\e[1;33mWould you like to install Caddy (If not already installed? [Y/N]\e[0m"
-    read -p " " installcaddy
-    
+    echo " "    
     echo " "
     echo -e "\e[1;33mInstalling Caddy. Please wait...\e[0m"
     echo " "
