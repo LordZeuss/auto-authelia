@@ -1,7 +1,8 @@
 # Auto-Authelia
-A script that will configure authelia automatically. See future plans of adding features below.
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/lordzeuss/auto-authelia?style=flat-square)
+
+A script that will configure authelia automatically. See future plans of adding features below.
 
 ## General Info
 I created a script that will install Nginx Proxy Manager via docker-compose, as well as Authelia and will give you prompts to quickly get Authelia up and running as quickly as possible.
