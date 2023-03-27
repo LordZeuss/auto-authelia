@@ -1,6 +1,7 @@
 # Auto-Authelia
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/lordzeuss/auto-authelia?style=flat-square)
+https://img.shields.io/github/stars/lordzeuss/auto-authelia?style=social
 
 A script that will configure authelia automatically. See future plans of adding features below.
 
