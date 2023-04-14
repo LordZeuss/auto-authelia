@@ -200,7 +200,7 @@ notifier:
     #  server_name: <smtp.example.com>
     #  skip_verify: false
     #  minimum_version: TLS1.2
-  ">> /home/$USER/auto-authelia/authelia/config/configuration.yml
+  " >> /home/$USER/auto-authelia/authelia/config/configuration.yml
   
   
 # Formatting the configuration file
@@ -243,7 +243,7 @@ if [ "$yesorno" = y ]; then
   sed -i "s/BANTIME/$bantime/" /home/$USER/auto-authelia/authelia/config/configuration.yml
   echo " "
   echo -e "\e[1;33mUpdated.\e[0m"
-elif [ "$regualtions" = n ]; then
+elif [ "$yesorno" = n ]; then
   echo " "
   echo -e "\e[1;33mUsing defaults. Updating...\e[0m"
   sed -i "s/RETRIES/5m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
