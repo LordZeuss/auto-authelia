@@ -14,7 +14,8 @@ echo " "
 echo -e "\e[1;33mSelect an option to install & configure: \e[0m"
 echo "1. Nginx Proxy Manager"
 echo "2. Caddy"
-echo "3. Exit"
+echo "3. Caddy (Docker-Compose)"
+echo "4. Exit"
 echo " "
 
 read -p "Enter your selection: " chooseproxy
@@ -111,12 +112,82 @@ echo " "
 echo -e "\e[1;33mYou will need to edit the Caddyfile for your services. There is a service.example.com there to provide a example.\e[0m"
 echo -e "\e[1;33mVisit the auto-authelia github page for more instructions.\e[0m"
     ;;
+
+
+
   3)
+    echo " "    
+    echo " "
+    echo -e "\e[1;33mInstalling Caddy. Please wait...\e[0m"
+    echo " "
+    
+    touch /home/$USER/auto-authelia/Caddyfile
+    mkdir /home/$USER/auto-authelia/caddy
+    touch /home/$USER/auto-authelia/caddy/docker-compose.yml
+
+    echo 'version: "3.7"
+
+services:
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - /home/$USER/auto-authelia/Caddyfile:/etc/caddy/Caddyfile
+      - $PWD/site:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:' >> /home/$USER/auto-authelia/caddy/docker-compose.yml
+
+    read -p "Enter the auth root domain [EX: auth.example.com] (SAME AS AUTHELIA SETUP ROOT DOMAIN): " rootauthdomain
+
+    echo "$rootauthdomain {
+        reverse_proxy localhost:9091
+}
+
+service.example.com {
+        forward_auth localhost:9091 {
+                uri /api/verify?rd=https://$rootauthdomain/
+                copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+        }
+        reverse_proxy localhost:SERVICEPORTHERE {
+        }
+}" >> /home/$USER/auto-authelia/Caddyfile
+
+    echo " "
+    echo " "
+    echo -e "\e[1;33mStart Caddy?\e[0m"
+    read -p "Answer: " cadstart
+
+    if [ "$cadstart" = y ]; then
+      cd /home/$USER/auto-authelia/caddy
+      docker-compose up -d
+    elif [ "$cadstart" = n ]; then
+      echo -e "\e[1;33mSkipping...\e[0m"
+    else
+      echo -e "\e[1;33mSkipping.\e[0m"
+    fi
+
+    echo " "
+    echo -e "\e[1;32mDone.\e[0m"
+    echo " "
+    echo -e "\e[1;33mYou will need to edit the Caddyfile for your services. There is a service.example.com there to provide a example.\e[0m"
+    echo -e "\e[1;33mVisit the auto-authelia github page for more instructions.\e[0m"
+   ;;
+  4)
     echo " "
     echo -e "\e[1;31mExiting...\e[0m"
     exit 0
     ;;
-  4)
+  5)
     echo -e "\e[1;31mInvalid choice. Please select a valid option.\e[0m"
     ;;
+
 esac
