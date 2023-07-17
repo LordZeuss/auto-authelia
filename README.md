@@ -55,15 +55,12 @@ Next, navigate to the new folder.
 cd auto-authelia
 ```
 
-Currently, you will need to make the script executable.
-
+Now, run the `setup.sh` to configure authelia, or run `proxy-setup.sh` to choose from a list of proxies to pre-configure.
 ```
-chmod +x setup.sh
+./setup.sh
 ```
-You will also need to make the `proxy-setup.sh` script executable if you wish to use that script also.
-
 ```
-chmod +x proxy-setup.sh
+./proxy-setup.sh
 ```
 
 ---
