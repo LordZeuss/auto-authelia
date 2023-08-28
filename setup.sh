@@ -339,7 +339,7 @@ if [ "$yesorno" = y ]; then
 # Comment out the local notification and enable smtp
 configfileloc="/home/$USER/auto-authelia/authelia/config/configuration.yml"
 sed -i '68,83 s/^#//' "$configfileloc"
-sed -i '70 s/^/#/' "$configfileloc"
+sed -i '69,70 s/^/#/' "$configfileloc"
 
 echo " "
 read -p $'\e[1;36mWhat is the email username? EX: user@gmail.com\e[0m: ' EMAILUSERNAME
