@@ -184,23 +184,23 @@ storage:
   encryption_key: SECRETREPLACE3 #Generate long string numb/letters
   local:
     path: /config/db.sqlite3
+
 notifier:
  filesystem:
   filename: /config/notification.txt
-  #smtp:
-  #  username: <Email Username>
-  #  password: <Email Password>
-  #  host: <Host: mail.example.com>
-  #  port: 110
-  #  sender: <youremail.example.com>
-  #  subject: "[Authelia] {title}"
-    #disable_require_tls: false
-    #disable_html_emails: false
-    #tls:
-    #  server_name: <smtp.example.com>
-    #  skip_verify: false
-    #  minimum_version: TLS1.2
-  " >> /home/$USER/auto-authelia/authelia/config/configuration.yml
+#  smtp:
+#    username: EMAILUSERNAME
+#    password: EMAILPASSWORD
+#    host: EMAILHOST
+#    port: EMAILPORT
+#    sender: EMAILSENDER
+#    subject: "[Authelia] {title}"
+#    disable_require_tls: false
+#    disable_html_emails: false
+#    tls:
+#      server_name: EMAILSERVERNAME
+#      skip_verify: false
+#      minimum_version: TLS1.2" >> /home/$USER/auto-authelia/authelia/config/configuration.yml
   
   
 # Formatting the configuration file
@@ -322,4 +322,49 @@ elif [ "$yesorno" = m ]; then
 else
   echo " "
   echo -e "\e[1;33mSkipping...\e[0m"
+fi
+
+######################################################################
+
+# Setting up email password resets
+
+echo " "
+echo " "
+echo -e "\e[1;36mWould you like to configure emails for password resets? (Default is no.) [Y\N] \e[0m"
+
+read -n1 yesorno
+
+if [ "$yesorno" = y ]; then
+
+# Comment out the local notification and enable smtp
+configfileloc="/home/$USER/auto-authelia/authelia/config/configuration.yml"
+sed -i '68,83 s/^#//' "$configfileloc"
+sed -i '70 s/^/#/' "$configfileloc"
+
+echo " "
+read -p $'\e[1;36mWhat is the email username? EX: user@gmail.com\e[0m: ' EMAILUSERNAME
+read -p $'\e[1;36mWhat is the email password?\e[0m: ' EMAILPASSWORD
+read -p $'\e[1;36mWhat is the email hostname? EX: mail.example.com\e[0m: ' EMAILHOST
+read -p $'\e[1;36mWhat is the smtp port? (Default is typically 110/587)\e[0m: ' EMAILPORT
+read -p $'\e[1;36mWhat is the name of the sender? (Typically the same as your email username)\e[0m: ' EMAILSENDER
+read -p $'\e[1;36mWhat is the server name? (Ex: smtp.example.com)\e[0m: ' EMAILSERVERNAME
+
+sed -i "s/EMAILUSERNAME/$EMAILUSERNAME/" /home/$USER/auto-authelia/authelia/config/configuration.yml
+sed -i "s/EMAILPASSWORD/$EMAILPASSWORD/" /home/$USER/auto-authelia/authelia/config/configuration.yml
+sed -i "s/EMAILHOST/$EMAILHOST/" /home/$USER/auto-authelia/authelia/config/configuration.yml
+sed -i "s/EMAILPORT/$EMAILPORT/" /home/$USER/auto-authelia/authelia/config/configuration.yml
+sed -i "s/EMAILSENDER/$EMAILSENDER/" /home/$USER/auto-authelia/authelia/config/configuration.yml
+sed -i "s/EMAILSERVERNAME/$EMAILSERVERNAME/" /home/$USER/auto-authelia/authelia/config/configuration.yml
+
+
+elif [ "$yesorno" = n ]; then
+  echo " "
+  echo -e "\e[1;33mUsing default.\e[0m"
+  echo -e "\e[1;33mSkipping...\e[0m"
+  echo " "
+else
+  echo " "
+  echo -e "\e[1;33mUsing default.\e[0m"
+  echo -e "\e[1;33mSkipping...\e[0m"
+  echo " "
 fi
