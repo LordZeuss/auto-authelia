@@ -30,6 +30,7 @@ I update this repo from time to time, and since it's a personal project, major u
 * [NGINX Proxy Manager Setup](#nginx-proxy-manager-setup)
 * [Caddy Setup](#caddy-setup)
 * [Starting Authelia](#starting-authelia)
+* [Support](#buy-me-a-beer)
 ---
 
 ## Pre-Requirements
@@ -397,3 +398,12 @@ docker-compose up -d
 ```
 
 ***NOTE: You will find the 2 factor authentication email inside of a `authelia/config` folder. It will be called `notification.txt`. This is because it is set to save on the system, unless you manually update the email settings in the configuration.yml file to send out an email.***
+
+---
+
+# buy-me-a-beer
+
+Liked some of my work? Buy me a beer!
+<a href="https://www.buymeacoffee.com/lordzeusss" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a
+
+
