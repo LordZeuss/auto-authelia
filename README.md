@@ -404,6 +404,6 @@ docker-compose up -d
 # buy-me-a-beer
 
 Liked some of my work? Buy me a beer!
-<a href="https://www.buymeacoffee.com/lordzeusss" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a
+<a href="https://www.buymeacoffee.com/lordzeusss" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" >
 
 
