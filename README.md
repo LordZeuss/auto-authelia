@@ -6,7 +6,7 @@
 A script that will configure authelia automatically. See future plans of adding features below.
 
 ## General Info
-I created a script that will install Nginx Proxy Manager via docker-compose, as well as Authelia and will give you prompts to quickly get Authelia up and running as quickly as pothanks!
+I created a script that will install Nginx Proxy Manager via docker-compose, as well as Authelia and will give you prompts to quickly get Authelia up and running as quickly as possible.
 
 I update this repo from time to time, and since it's a personal project, major updates are periodic. Please leave feature requests if you'd like to see any additions. 
 
