@@ -246,7 +246,7 @@ if [ "$yesorno" = y ]; then
 elif [ "$yesorno" = n ]; then
   echo " "
   echo -e "\e[1;33mUsing defaults. Updating...\e[0m"
-  sed -i "s/RETRIES/5m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
+  sed -i "s/RETRIES/5/" /home/$USER/auto-authelia/authelia/config/configuration.yml
   sed -i "s/FINDTIME/2m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
   sed -i "s/BANTIME/10m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
   echo " "
@@ -255,7 +255,7 @@ else
   echo " "
   echo -e "\e[1;31mUnknown Input.\e[0m"
   echo -e "\e[1;31mUsing defaults. Updating...\e[0m"
-  sed -i "s/RETRIES/5m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
+  sed -i "s/RETRIES/5/" /home/$USER/auto-authelia/authelia/config/configuration.yml
   sed -i "s/FINDTIME/2m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
   sed -i "s/BANTIME/10m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
   echo " "
