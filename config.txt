@@ -1,0 +1,2 @@
+authdomain=https://auth.example.com
+rootdomain=example.com
