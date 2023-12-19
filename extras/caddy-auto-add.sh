@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Auto add to Caddyfile in root dir.
+
 # Pull data from the config.txt file
 source config.txt
 
