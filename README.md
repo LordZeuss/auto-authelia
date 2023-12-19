@@ -76,6 +76,9 @@ You will want to make sure that you already have docker & docker-compose install
 
 Optionally, you can manually hash the password yourself.
 
+**Port Forwarding**
+I have noticed in some cases that you may need to port forward port 443/80 to the machine running authelia. If you encounter any errors, such as your router login showing up when going to the auth domain, give this a try.
+
 
 ---
 
