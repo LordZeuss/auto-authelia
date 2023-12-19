@@ -19,6 +19,7 @@ I update this repo from time to time, and since it's a personal project, major u
 #### UPDATE 3/26: NPM & Caddy (setup for caddy) script added! 
 #### UPDATE 7/16: Added the option to install caddy via docker instead of only on bare metal.
 #### UPDATE 8/28: BIG UPDATE! I have added the ability to configure email/smtp for sending password resets!
+#### UPDATE 12/19: Extras folder added! If you are using a caddyfile in the root directory, you can run the caddy-auto-add.sh script to add services to your caddy file with ease!
 ---
 
 ## Table of Contents
