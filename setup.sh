@@ -11,8 +11,8 @@ ___  ____ _  _ ____    _ _  _ ____ ___ ____ _    _    ____ ____
 #v1.0
 
 #Functions List
-update () { yes | sudo apt-get update; }
-upgrade () { yes | sudo apt-get upgrade; }
+update() { yes | sudo apt-get update; }
+upgrade() { yes | sudo apt-get upgrade; }
 
 # Update the system
 echo -e "\e[1;33mWould you like to update the system (Recommended)? (y/n/e)\e[0m"
@@ -40,38 +40,63 @@ fi
 
 clear
 
-
-
 ######################################################################
 #
 # Start of configuration
 #
 ######################################################################
 
+echo -e "\e[1;33mDo you want to use the default installation path (Home directory)? [Y/N]\e[0m"
+read -n1 yesorno
 
+if [ "$yesorno" = y ]; then
+	echo " "
+	echo -e "\e[1;33mCreating files and directories for authelia...\e[0m"
+	echo " "
+	mkdir -p /home/$USER/auto-authelia/authelia
+	mkdir -p /home/$USER/auto-authelia/authelia/config
+	touch /home/$USER/auto-authelia/authelia/docker-compose.yml
+	touch /home/$USER/auto-authelia/authelia/config/configuration.yml
+	touch /home/$USER/auto-authelia/authelia/config/users_database.yml
+	files=("/home/$USER/auto-authelia/authelia" "/home/$USER/auto-authelia/authelia/config" "/home/$USER/auto-authelia/authelia/docker-compose.yml" "/home/$USER/auto-authelia/authelia/config/configuration.yml" "/home/$USER/auto-authelia/authelia/config/users_database.yml")
 
-# Make directories/files for authelia
-echo -e "\e[1;33mCreating files and directories for authelia...\e[0m"
-echo " "
-mkdir -p /home/$USER/auto-authelia/authelia
-mkdir -p /home/$USER/auto-authelia/authelia/config
-touch /home/$USER/auto-authelia/authelia/docker-compose.yml
-touch /home/$USER/auto-authelia/authelia/config/configuration.yml
-touch /home/$USER/auto-authelia/authelia/config/users_database.yml
+	# Loop through the array and check each file or directory
+	for file in "${files[@]}"; do
+		if [ -e "$file" ]; then
+			echo -e "\e[1;32mThe file or directory '$file' was created successfully...\e[0m"
+		else
+			echo -e "\e[1;31mThe file or directory '$file' was not created.\e[0m"
+			echo -e "\e[1;31mPlease verify that the script can write to the /home/$USER/auto-authelia/authelia directory.\e[0m"
+		fi
+	done
+	root=/home/$USER/auto-authelia
 
+elif [ "$yesorno" = n ]; then
+	echo " "
+	echo -e "\e[1;33mEnter install folder location\e[0m"
+	read -r root
+	echo " "
+	echo -e "\e[1;33mCreating files and directories for authelia...\e[0m"
+	echo " "
+	mkdir -p "$root/authelia"
+	mkdir -p "$root/authelia/config"
+	touch "$root/authelia/docker-compose.yml"
+	touch "$root/authelia/config/configuration.yml"
+	touch "$root/authelia/config/users_database.yml"
 
-# Verifying that files/directories were created
-files=( "/home/$USER/auto-authelia/authelia" "/home/$USER/auto-authelia/authelia/config" "/home/$USER/auto-authelia/authelia/docker-compose.yml" "/home/$USER/auto-authelia/authelia/config/configuration.yml" "/home/$USER/auto-authelia/authelia/config/users_database.yml")
+	# Verifying that files/directories were created
+	files=("$root/authelia" "$root/authelia/config" "$root/authelia/docker-compose.yml" "$root/authelia/config/configuration.yml" "$root/authelia/config/users_database.yml")
 
-# Loop through the array and check each file or directory
-for file in "${files[@]}"; do
-    if [ -e "$file" ]; then
-        echo -e "\e[1;32mThe file or directory '$file' was created successfully...\e[0m"
-    else
-        echo -e "\e[1;31mThe file or directory '$file' was not created.\e[0m"
-        echo -e "\e[1;31mPlease verify that the script can write to the /home/$USER/auto-authelia/authelia directory.\e[0m"
-    fi
-done
+	# Loop through the array and check each file or directory
+	for file in "${files[@]}"; do
+		if [ -e "$file" ]; then
+			echo -e "\e[1;32mThe file or directory '$file' was created successfully...\e[0m"
+		else
+			echo -e "\e[1;31mThe file or directory '$file' was not created.\e[0m"
+			echo -e "\e[1;31mPlease verify that the script can write to the $root/authelia directory.\e[0m"
+		fi
+	done
+fi
 
 echo " "
 echo " "
@@ -103,7 +128,7 @@ services:
     restart: unless-stopped
     environment:
       - TZ=America/Chicago
-" >> /home/$USER/auto-authelia/authelia/docker-compose.yml
+" >>$root/authelia/docker-compose.yml
 echo " "
 echo -e "\e[1;33mDone.\e[0m"
 echo " "
@@ -115,8 +140,6 @@ read -p $'\e[1;36mEnter the Redirect URL [INCLUDE https:// HERE][EX: https://aut
 read -p $'\e[1;36mEnter the Root Domain to protect [EX: example.com]\e[0m: ' rootdomain
 read -p $'\e[1;36mEnter the Auth root domain [EX: auth.example.com]\e[0m: ' rootauth
 read -p $'\e[1;36mDo you prefer Light or Dark mode/theme? [TYPE light OR dark]\e[0m: ' theme
-
-
 
 echo "###############################################################
 #                   Authelia configuration                    #
@@ -200,23 +223,21 @@ notifier:
 #    tls:
 #      server_name: EMAILSERVERNAME
 #      skip_verify: false
-#      minimum_version: TLS1.2" >> /home/$USER/auto-authelia/authelia/config/configuration.yml
-  
-  
+#      minimum_version: TLS1.2" >>$root/authelia/config/configuration.yml
+
 # Formatting the configuration file
-sed -i "s/AUTHDOMAIN-CHANGEME/\"$rootauth\"/g" /home/$USER/auto-authelia/authelia/config/configuration.yml
-secret=$(LC_CTYPE=C tr -dc 'a-zA-Z' < /dev/urandom | head -c 40)
-sed -i "s/SECRETREPLACE/$secret/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-sed -i "s/SECRETREPLACE2/$secret/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-sed -i "s/SECRETREPLACE3/$secret/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-sed -i "s/'/\"/g" /home/$USER/auto-authelia/authelia/config/configuration.yml
+sed -i "s/AUTHDOMAIN-CHANGEME/\"$rootauth\"/g" $root/authelia/config/configuration.yml
+secret=$(LC_CTYPE=C tr -dc 'a-zA-Z' </dev/urandom | head -c 40)
+sed -i "s/SECRETREPLACE/$secret/" $root/authelia/config/configuration.yml
+sed -i "s/SECRETREPLACE2/$secret/" $root/authelia/config/configuration.yml
+sed -i "s/SECRETREPLACE3/$secret/" $root/authelia/config/configuration.yml
+sed -i "s/'/\"/g" $root/authelia/config/configuration.yml
 
 echo " "
 echo " "
 echo -e "\e[1;32mAuthelia configuration file updated.\e[0m"
 echo " "
 echo " "
-
 
 ######################################################################
 
@@ -230,38 +251,37 @@ echo " "
 echo -e '\e[1;36mWould you like to edit those fields? [Y/N]\e[0m: '
 read -n1 yesorno
 if [ "$yesorno" = y ]; then
-  echo " "
-  read -p $'\e[1;36mEnter the MAXIMUM amount of retries\e[0m: ' retries
-  echo " "
-  read -p $'\e[1;36mEnter the Find Time (How many attempts per _)\e[0m: ' findtime
-  echo " "
-  read -p $'\e[1;36mEnter the Ban Time\e[0m: ' bantime
-  echo " "
-  echo -e "\e[1;33mUpdating...\e[0m"
-  sed -i "s/RETRIES/$retries/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-  sed -i "s/FINDTIME/$findtime/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-  sed -i "s/BANTIME/$bantime/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-  echo " "
-  echo -e "\e[1;33mUpdated.\e[0m"
+	echo " "
+	read -p $'\e[1;36mEnter the MAXIMUM amount of retries\e[0m: ' retries
+	echo " "
+	read -p $'\e[1;36mEnter the Find Time (How many attempts per _)\e[0m: ' findtime
+	echo " "
+	read -p $'\e[1;36mEnter the Ban Time\e[0m: ' bantime
+	echo " "
+	echo -e "\e[1;33mUpdating...\e[0m"
+	sed -i "s/RETRIES/$retries/" $root/authelia/config/configuration.yml
+	sed -i "s/FINDTIME/$findtime/" $root/authelia/config/configuration.yml
+	sed -i "s/BANTIME/$bantime/" $root/authelia/config/configuration.yml
+	echo " "
+	echo -e "\e[1;33mUpdated.\e[0m"
 elif [ "$yesorno" = n ]; then
-  echo " "
-  echo -e "\e[1;33mUsing defaults. Updating...\e[0m"
-  sed -i "s/RETRIES/5/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-  sed -i "s/FINDTIME/2m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-  sed -i "s/BANTIME/10m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-  echo " "
-  echo -e "\e[1;33mUpdated.\e[0m"
+	echo " "
+	echo -e "\e[1;33mUsing defaults. Updating...\e[0m"
+	sed -i "s/RETRIES/5/" $root/authelia/config/configuration.yml
+	sed -i "s/FINDTIME/2m/" $root/authelia/config/configuration.yml
+	sed -i "s/BANTIME/10m/" $root/authelia/config/configuration.yml
+	echo " "
+	echo -e "\e[1;33mUpdated.\e[0m"
 else
-  echo " "
-  echo -e "\e[1;31mUnknown Input.\e[0m"
-  echo -e "\e[1;31mUsing defaults. Updating...\e[0m"
-  sed -i "s/RETRIES/5/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-  sed -i "s/FINDTIME/2m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-  sed -i "s/BANTIME/10m/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-  echo " "
-  echo -e "\e[1;33mUpdated.\e[0m"
+	echo " "
+	echo -e "\e[1;31mUnknown Input.\e[0m"
+	echo -e "\e[1;31mUsing defaults. Updating...\e[0m"
+	sed -i "s/RETRIES/5/" $root/authelia/config/configuration.yml
+	sed -i "s/FINDTIME/2m/" $root/authelia/config/configuration.yml
+	sed -i "s/BANTIME/10m/" $root/authelia/config/configuration.yml
+	echo " "
+	echo -e "\e[1;33mUpdated.\e[0m"
 fi
-
 
 ######################################################################
 
@@ -277,9 +297,9 @@ echo -e "\e[1;36mWould you like to configure and hash the admin password automat
 read -n1 yesorno
 
 if [ "$yesorno" = a ]; then
-  echo " "
-  read -s -p $'\e[1;36mEnter the password for the admin user\e[0m: ' adminpass
-  echo "users:
+	echo " "
+	read -s -p $'\e[1;36mEnter the password for the admin user\e[0m: ' adminpass
+	echo "users:
   $user: #username for user 1. change to whatever you'd like
     displayname: "$userdisplay" #whatever you want the display name to be
     password: "HASHPASS" #generated at https://argon2.online/
@@ -290,19 +310,19 @@ if [ "$yesorno" = a ]; then
     #displayname: "User2"
     #password: "hashedpasswordhere" #generated at https://argon2.online/ OR docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'
     #email: user2@email.com
-" >> /home/$USER/auto-authelia/authelia/config/users_database.yml
-  echo " "
-  echo " "
-  echo -e "\e[1;33mRunning Authelia docker container to hash password. Please wait...\e[0m"
-# Run the docker command and save the output to a variable
-  output=$(docker run authelia/authelia:latest authelia crypto hash generate argon2 --password '$adminpass')
-# Extract the hash from the output and save it to a variable
-  HASHPASS=${output#Digest: }
-  sed -i "s/HASHPASS/$secret/" /home/$USER/auto-authelia/authelia/config/users_database.yml
-  echo " "
-  echo -e "\e[1;32mPassword Updated.\e[0m"
+" >>/home/$USER/auto-authelia/authelia/config/users_database.yml
+	echo " "
+	echo " "
+	echo -e "\e[1;33mRunning Authelia docker container to hash password. Please wait...\e[0m"
+	# Run the docker command and save the output to a variable
+	output=$(docker run authelia/authelia:latest authelia crypto hash generate argon2 --password '$adminpass')
+	# Extract the hash from the output and save it to a variable
+	HASHPASS=${output#Digest: }
+	sed -i "s/HASHPASS/$secret/" $root/authelia/config/users_database.yml
+	echo " "
+	echo -e "\e[1;32mPassword Updated.\e[0m"
 elif [ "$yesorno" = m ]; then
-  echo "users:
+	echo "users:
   $user: #username for user 1. change to whatever you'd like
     displayname: "$userdisplay" #whatever you want the display name to be
     password: "HASHPASS" #generated at https://argon2.online/
@@ -313,15 +333,15 @@ elif [ "$yesorno" = m ]; then
     #displayname: "User2"
     #password: "hashedpasswordhere" #generated at https://argon2.online/ OR docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'
     #email: user2@email.com
-" >> /home/$USER/auto-authelia/authelia/config/users_database.yml
+" >>$root/authelia/config/users_database.yml
 
-  echo " "
-  echo -e "\e[1;33mYou can generate a password at https://argon2.online/ OR run the command: docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'\e[0m"
-  echo " "
-  echo -e "\e[1;33mNavigate to /home/$USER/auto-authelia/authelia/config and edit the configuration.yml file. Replace the HASHPASS string with the hashed password\e[0m"
+	echo " "
+	echo -e "\e[1;33mYou can generate a password at https://argon2.online/ OR run the command: docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'TYPEPASSWORDHERE'\e[0m"
+	echo " "
+	echo -e "\e[1;33mNavigate to $root/authelia/config and edit the configuration.yml file. Replace the HASHPASS string with the hashed password\e[0m"
 else
-  echo " "
-  echo -e "\e[1;33mSkipping...\e[0m"
+	echo " "
+	echo -e "\e[1;33mSkipping...\e[0m"
 fi
 
 ######################################################################
@@ -336,35 +356,34 @@ read -n1 yesorno
 
 if [ "$yesorno" = y ]; then
 
-# Comment out the local notification and enable smtp
-configfileloc="/home/$USER/auto-authelia/authelia/config/configuration.yml"
-sed -i '68,83 s/^#//' "$configfileloc"
-sed -i '69,70 s/^/#/' "$configfileloc"
+	# Comment out the local notification and enable smtp
+	configfileloc="$root/authelia/config/configuration.yml"
+	sed -i '68,83 s/^#//' "$configfileloc"
+	sed -i '69,70 s/^/#/' "$configfileloc"
 
-echo " "
-read -p $'\e[1;36mWhat is the email username? EX: user@gmail.com\e[0m: ' EMAILUSERNAME
-read -p $'\e[1;36mWhat is the email password?\e[0m: ' EMAILPASSWORD
-read -p $'\e[1;36mWhat is the email hostname? EX: mail.example.com\e[0m: ' EMAILHOST
-read -p $'\e[1;36mWhat is the smtp port? (Default is typically 110/587)\e[0m: ' EMAILPORT
-read -p $'\e[1;36mWhat is the name of the sender? (Typically the same as your email username)\e[0m: ' EMAILSENDER
-read -p $'\e[1;36mWhat is the server name? (Ex: smtp.example.com)\e[0m: ' EMAILSERVERNAME
+	echo " "
+	read -p $'\e[1;36mWhat is the email username? EX: user@gmail.com\e[0m: ' EMAILUSERNAME
+	read -p $'\e[1;36mWhat is the email password?\e[0m: ' EMAILPASSWORD
+	read -p $'\e[1;36mWhat is the email hostname? EX: mail.example.com\e[0m: ' EMAILHOST
+	read -p $'\e[1;36mWhat is the smtp port? (Default is typically 110/587)\e[0m: ' EMAILPORT
+	read -p $'\e[1;36mWhat is the name of the sender? (Typically the same as your email username)\e[0m: ' EMAILSENDER
+	read -p $'\e[1;36mWhat is the server name? (Ex: smtp.example.com)\e[0m: ' EMAILSERVERNAME
 
-sed -i "s/EMAILUSERNAME/$EMAILUSERNAME/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-sed -i "s/EMAILPASSWORD/$EMAILPASSWORD/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-sed -i "s/EMAILHOST/$EMAILHOST/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-sed -i "s/EMAILPORT/$EMAILPORT/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-sed -i "s/EMAILSENDER/$EMAILSENDER/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-sed -i "s/EMAILSERVERNAME/$EMAILSERVERNAME/" /home/$USER/auto-authelia/authelia/config/configuration.yml
-
+	sed -i "s/EMAILUSERNAME/$EMAILUSERNAME/" $root/authelia/config/configuration.yml
+	sed -i "s/EMAILPASSWORD/$EMAILPASSWORD/" $root/authelia/config/configuration.yml
+	sed -i "s/EMAILHOST/$EMAILHOST/" $root/authelia/config/configuration.yml
+	sed -i "s/EMAILPORT/$EMAILPORT/" $root/authelia/config/configuration.yml
+	sed -i "s/EMAILSENDER/$EMAILSENDER/" $root/authelia/config/configuration.yml
+	sed -i "s/EMAILSERVERNAME/$EMAILSERVERNAME/" $root/authelia/config/configuration.yml
 
 elif [ "$yesorno" = n ]; then
-  echo " "
-  echo -e "\e[1;33mUsing default.\e[0m"
-  echo -e "\e[1;33mSkipping...\e[0m"
-  echo " "
+	echo " "
+	echo -e "\e[1;33mUsing default.\e[0m"
+	echo -e "\e[1;33mSkipping...\e[0m"
+	echo " "
 else
-  echo " "
-  echo -e "\e[1;33mUsing default.\e[0m"
-  echo -e "\e[1;33mSkipping...\e[0m"
-  echo " "
+	echo " "
+	echo -e "\e[1;33mUsing default.\e[0m"
+	echo -e "\e[1;33mSkipping...\e[0m"
+	echo " "
 fi
